@@ -57,6 +57,8 @@ class Puzzle
 
         $inputStream = fopen('php://stdin', 'r');
 
+        echo 'Press any key to start' . PHP_EOL;
+
         while (1) {
             $this->geuUserInput($inputStream);
 
