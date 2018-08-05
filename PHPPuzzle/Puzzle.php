@@ -4,16 +4,16 @@ class Puzzle
 {
     const MAX_FPS = 25;
 
-    const INPUT_UP = 119;
-    const INPUT_DOWN = 115;
-    const INPUT_LEFT = 97;
-    const INPUT_RIGHT = 100;
+    const KEY_CODE_UP = 119;
+    const KEY_CODE_DOWN = 115;
+    const KEY_CODE_LEFT = 97;
+    const KEY_CODE_RIGHT = 100;
 
     const ALLOWED_INPUT_CHARACTERS = [
-        self::INPUT_UP,
-        self::INPUT_DOWN,
-        self::INPUT_LEFT,
-        self::INPUT_RIGHT
+        self::KEY_CODE_UP,
+        self::KEY_CODE_DOWN,
+        self::KEY_CODE_LEFT,
+        self::KEY_CODE_RIGHT
     ];
 
     const SCREEN_SIZE_Y_MIN = 1;
@@ -93,25 +93,25 @@ class Puzzle
 
     public function movePointer($direction)
     {
-        if ($direction === self::INPUT_UP) {
+        if ($direction === self::KEY_CODE_UP) {
             if ($this->pointerPosY > self::SCREEN_SIZE_X_MIN) {
                 $this->pointerPosY -= 1;
             }
         }
 
-        if ($direction === self::INPUT_DOWN) {
+        if ($direction === self::KEY_CODE_DOWN) {
             if ($this->pointerPosY < self::SCREEN_SIZE_X_MAX) {
                 $this->pointerPosY += 1;
             }
         }
 
-        if ($direction === self::INPUT_LEFT) {
+        if ($direction === self::KEY_CODE_LEFT) {
             if ($this->pointerPosX > self::SCREEN_SIZE_X_MIN) {
                 $this->pointerPosX -= 1;
             }
         }
 
-        if ($direction === self::INPUT_RIGHT) {
+        if ($direction === self::KEY_CODE_RIGHT) {
             if ($this->pointerPosX < self::SCREEN_SIZE_X_MAX) {
                 $this->pointerPosX += 1;
             }
