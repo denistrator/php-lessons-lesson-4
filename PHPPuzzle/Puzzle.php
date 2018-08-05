@@ -60,23 +60,23 @@ class Puzzle
         echo 'Press any key to start' . PHP_EOL;
 
         while (1) {
-            $this->geuUserInput($inputStream);
+            $this->geuInputKey($inputStream);
 
             $this->updateBoard($this->inputCharacter);
 
-            $this->drawScreen($this->screen);
+            $this->clearScreen();
+
+            $this->drawBoard($this->screen);
         }
     }
 
-    public function geuUserInput($input)
+    public function geuInputKey($input)
     {
         $this->inputCharacter = ord(fgetc($input));
     }
 
-    public function drawScreen($screen)
+    public function drawBoard($screen)
     {
-        echo str_repeat(PHP_EOL, 13);
-
         foreach ($screen as $screenRow) {
             foreach ($screenRow as $screenSymbol) {
                 echo $screenSymbol . '  ';
@@ -85,13 +85,10 @@ class Puzzle
             echo PHP_EOL;
             echo PHP_EOL;
         }
-
-        echo str_repeat(PHP_EOL, 10);
     }
 
     public function movePointer($direction)
     {
-
         if ($direction === self::INPUT_UP) {
             if ($this->pointerPosY > self::SCREEN_SIZE_X_MIN) {
                 $this->pointerPosY -= 1;
@@ -115,5 +112,10 @@ class Puzzle
                 $this->pointerPosX += 1;
             }
         }
+    }
+
+    public function clearScreen()
+    {
+        system('clear');
     }
 }
