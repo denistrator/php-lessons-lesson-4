@@ -24,7 +24,9 @@ class Puzzle
     const SCREEN_SIZE_X_MIN = 1;
     const SCREEN_SIZE_X_MAX = 4;
 
-    const POINTER_CHARACTER = '  ';
+    const EMPTY_CHIP_CHARACTERS = '  ';
+
+    const POINTER_CHARACTER = self::EMPTY_CHIP_CHARACTERS;
 
     const COMPLETE_BOARD = [
         ['01', '02', '03', '04'],
@@ -125,9 +127,10 @@ class Puzzle
 
         $boardFrameBorderVertical = str_repeat($frameCharacter, $frameWidth);
 
-        $chipMargin = 1;
-        $chipMarginVertical = $chipMargin;
-        $chipMarginHorizontal = str_repeat(' ', $chipMargin * 2);
+        $chipMarginStep = 2;
+        $chipMarginVertical = 1 + $chipMarginStep * 2;
+        $chipMiddleCell = ($chipMarginVertical - 1) / 2;
+        $chipMarginHorizontal = str_repeat(' ', $chipMarginStep * 2);
 
         echo $boardFrameMarginVertical;
         echo $boardFrameMarginHorizontal . $boardFrameBorderVertical . PHP_EOL;
@@ -136,21 +139,36 @@ class Puzzle
 
             echo $boardFrameMarginHorizontal . $frameCharacter . $chipMarginHorizontal;
 
-            foreach ($screenRow as $screenSymbolKey => $screenSymbol) {
-                echo $screenSymbol;
-
-                if ($screenSymbolKey !== count($screenRow) - 1) {
-                    echo $chipMarginHorizontal . $horizontalSplitterCharacter . $chipMarginHorizontal;
+            for ($chipMarginStep = 0; $chipMarginStep < $chipMarginVertical; $chipMarginStep++) {
+                if ($chipMarginStep !== 0) {
+                    echo $boardFrameMarginHorizontal . $frameCharacter . $chipMarginHorizontal;
                 }
-            }
 
-            echo $chipMarginHorizontal . $frameCharacter;
-            echo PHP_EOL;
+                foreach ($screenRow as $screenSymbolKey => $screenSymbol) {
+                    if ($chipMarginStep < $chipMiddleCell) {
+                        echo self::EMPTY_CHIP_CHARACTERS;
+                    }
+
+                    if ($chipMarginStep === $chipMiddleCell) {
+                        echo $screenSymbol;
+                    }
+
+                    if ($chipMarginStep > $chipMiddleCell) {
+                        echo self::EMPTY_CHIP_CHARACTERS;
+                    }
+
+                    if ($screenSymbolKey !== count($screenRow) - 1) {
+                        echo $chipMarginHorizontal . $horizontalSplitterCharacter . $chipMarginHorizontal;
+                    }
+                }
+
+                echo $chipMarginHorizontal . $frameCharacter;
+                echo PHP_EOL;
+            }
 
             if ($screenRowKey !== count($screen) - 1) {
                 echo $boardFrameMarginHorizontal . $frameCharacter . str_repeat($verticalSplitterCharacter, $frameWidth - 2) . $frameCharacter . PHP_EOL;
             }
-
         }
 
         echo $boardFrameMarginHorizontal . $boardFrameBorderVertical . PHP_EOL;
