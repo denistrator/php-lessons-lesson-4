@@ -153,7 +153,7 @@ class Puzzle
 
     public function showStartScreen()
     {
-        echo 'Use W, A, S, D for moving the game pointer' . PHP_EOL;
+        echo 'Use W, A, S, D to move the game pointer' . PHP_EOL;
         echo 'Press any key to start' . PHP_EOL;
     }
 
