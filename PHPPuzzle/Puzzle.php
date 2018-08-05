@@ -21,21 +21,31 @@ class Puzzle
     const SCREEN_SIZE_X_MIN = 1;
     const SCREEN_SIZE_X_MAX = 4;
 
-    /* default pointer position Y */
+    const POINTER_CHARACTER = '  ';
+
+    const COMPLETE_BOARD = [
+        ['01', '02', '03', '04'],
+        ['05', '06', '07', '08'],
+        ['09', '10', '11', '12'],
+        ['13', '14', '15', self::POINTER_CHARACTER]
+    ];
+
+    const FINISH_SCREEN_TEXT = 'You\'ve completed the puzzle';
+
     private $pointerPosY = 2;
 
-    /* default pointer position X */
     private $pointerPosX = 3;
 
-    /* default game screen */
-    private $screen = [
+    private $board = [
         ['01', '02', '03', '04'],
-        ['05', '06', '  ', '07'],
+        ['05', '06', self::POINTER_CHARACTER, '07'],
         ['09', '10', '11', '08'],
         ['13', '14', '15', '12']
     ];
 
     private $inputCharacter;
+
+    private $isPuzzleComplete = false;
 
     public function updateBoard($inputCharacter)
     {
@@ -45,11 +55,12 @@ class Puzzle
 
             $this->movePointer($inputCharacter);
 
-            $oldPointerCharacter = $this->screen[$oldPointerPosY - 1][$oldPointerPosX - 1];
-            $newPointerCharacter = $this->screen[$this->pointerPosY - 1][$this->pointerPosX - 1];
+            $oldPointerCharacter = $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1];
+            $newPointerCharacter = $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1];
 
-            $this->screen[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
-            $this->screen[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
+            $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
+            $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
+
         }
     }
 
@@ -61,7 +72,7 @@ class Puzzle
 
         echo 'Press any key to start' . PHP_EOL;
 
-        while (1) {
+        while (!$this->isPuzzleComplete) {
             $this->geuInputKey($inputStream);
 
             $this->updateBoard($this->inputCharacter);
@@ -70,7 +81,11 @@ class Puzzle
 
             $this->limitScreenRefreshRate();
 
-            $this->drawBoard($this->screen);
+            $this->drawBoard($this->board);
+
+            $this->checkIfPuzzleComplete();
+
+            $this->showFinishScreen();
         }
     }
 
@@ -126,5 +141,19 @@ class Puzzle
     public function limitScreenRefreshRate()
     {
         sleep(1 / self::MAX_FPS);
+    }
+
+    public function checkIfPuzzleComplete()
+    {
+        if ($this->board === self::COMPLETE_BOARD) {
+            $this->isPuzzleComplete = true;
+        }
+    }
+
+    public function showFinishScreen()
+    {
+        if ($this->isPuzzleComplete) {
+            echo self::FINISH_SCREEN_TEXT . PHP_EOL;
+        }
     }
 }
