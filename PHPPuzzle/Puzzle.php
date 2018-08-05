@@ -59,7 +59,7 @@ class Puzzle
         $this->showStartScreen();
 
         while (!$this->isPuzzleComplete) {
-            $this->geuInputKey($inputStream);
+            $this->getInputKey($inputStream);
 
             $this->updateBoard();
 
@@ -75,7 +75,7 @@ class Puzzle
         }
     }
 
-    public function geuInputKey($input)
+    public function getInputKey($input)
     {
         $this->inputCharacter = ord(fgetc($input));
     }
@@ -188,7 +188,7 @@ class Puzzle
             echo 'Press F to respect the author or any other key exit' . PHP_EOL;
 
             $inputStream = fopen('php://stdin', 'r');
-            $this->geuInputKey($inputStream);
+            $this->getInputKey($inputStream);
 
             // 70  = F
             // 102 = f
