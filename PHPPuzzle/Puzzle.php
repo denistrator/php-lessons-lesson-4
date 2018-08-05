@@ -113,14 +113,48 @@ class Puzzle
     public function drawBoard()
     {
         $screen = $this->board;
-        foreach ($screen as $screenRow) {
-            foreach ($screenRow as $screenSymbol) {
-                echo $screenSymbol . '  ';
+
+        $frameWidth = 29;
+        $frameCharacter = '#';
+        $verticalSplitterCharacter = '-';
+        $horizontalSplitterCharacter = '|';
+
+        $boardFrameMargin = 2;
+        $boardFrameMarginVertical = str_repeat(PHP_EOL, $boardFrameMargin);
+        $boardFrameMarginHorizontal = str_repeat(' ', $boardFrameMargin * 2);
+
+        $boardFrameBorderVertical = str_repeat($frameCharacter, $frameWidth);
+
+        $chipMargin = 1;
+        $chipMarginVertical = $chipMargin;
+        $chipMarginHorizontal = str_repeat(' ', $chipMargin * 2);
+
+        echo $boardFrameMarginVertical;
+        echo $boardFrameMarginHorizontal . $boardFrameBorderVertical . PHP_EOL;
+
+        foreach ($screen as $screenRowKey => $screenRow) {
+
+            echo $boardFrameMarginHorizontal . $frameCharacter . $chipMarginHorizontal;
+
+            foreach ($screenRow as $screenSymbolKey => $screenSymbol) {
+                echo $screenSymbol;
+
+                if ($screenSymbolKey !== count($screenRow) - 1) {
+                    echo $chipMarginHorizontal . $horizontalSplitterCharacter . $chipMarginHorizontal;
+                }
             }
 
+            echo $chipMarginHorizontal . $frameCharacter;
             echo PHP_EOL;
-            echo PHP_EOL;
+
+            if ($screenRowKey !== count($screen) - 1) {
+                echo $boardFrameMarginHorizontal . $frameCharacter . str_repeat($verticalSplitterCharacter, $frameWidth - 2) . $frameCharacter . PHP_EOL;
+            }
+
         }
+
+        echo $boardFrameMarginHorizontal . $boardFrameBorderVertical . PHP_EOL;
+        echo $boardFrameMarginVertical;
     }
 
     public function movePointer($direction)
