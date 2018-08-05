@@ -116,21 +116,27 @@ class Puzzle
     {
         $screen = $this->board;
 
-        $frameWidth = 29;
+        $verticalSpacer = PHP_EOL;
+        $horizontalSpacer = '  ';
+
         $frameCharacter = '#';
         $verticalSplitterCharacter = '-';
         $horizontalSplitterCharacter = '|';
 
-        $boardFrameMargin = 2;
-        $boardFrameMarginVertical = str_repeat(PHP_EOL, $boardFrameMargin);
+        $boardFrameMargin = 3;
+        $boardFrameMarginVertical = str_repeat($verticalSpacer, $boardFrameMargin);
         $boardFrameMarginHorizontal = str_repeat(' ', $boardFrameMargin * 2);
 
-        $boardFrameBorderVertical = str_repeat($frameCharacter, $frameWidth);
-
-        $chipMarginStep = 2;
+        $chipMarginStep = 1;
         $chipMarginVertical = 1 + $chipMarginStep * 2;
         $chipMiddleCell = ($chipMarginVertical - 1) / 2;
-        $chipMarginHorizontal = str_repeat(' ', $chipMarginStep * 2);
+        $chipMarginHorizontal = str_repeat($horizontalSpacer, $chipMarginStep);
+
+        $chipWidth = (strlen(self::EMPTY_CHIP_CHARACTERS) + strlen($chipMarginHorizontal) * 2);
+        $chipSplitters = self::SCREEN_SIZE_X_MAX - 1;
+        $chipsAmount = self::SCREEN_SIZE_X_MAX;
+        $frameWidth = ($chipWidth * $chipsAmount) + $chipSplitters + 2; /* plus left & right frames */
+        $boardFrameBorderVertical = str_repeat($frameCharacter, $frameWidth);
 
         echo $boardFrameMarginVertical;
         echo $boardFrameMarginHorizontal . $boardFrameBorderVertical . PHP_EOL;
