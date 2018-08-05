@@ -30,8 +30,6 @@ class Puzzle
         ['13', '14', '15', self::POINTER_CHARACTER]
     ];
 
-    const FINISH_SCREEN_TEXT = 'You\'ve completed the puzzle';
-
     private $pointerPosY = 2;
 
     private $pointerPosX = 3;
@@ -70,7 +68,7 @@ class Puzzle
 
         $inputStream = fopen('php://stdin', 'r');
 
-        echo 'Press any key to start' . PHP_EOL;
+        $this->showStartScreen();
 
         while (!$this->isPuzzleComplete) {
             $this->geuInputKey($inputStream);
@@ -150,10 +148,16 @@ class Puzzle
         }
     }
 
+    public function showStartScreen()
+    {
+        echo 'Use W, A, S, D for moving the game pointer' . PHP_EOL;
+        echo 'Press any key to start' . PHP_EOL;
+    }
+
     public function showFinishScreen()
     {
         if ($this->isPuzzleComplete) {
-            echo self::FINISH_SCREEN_TEXT . PHP_EOL;
+            echo 'You\'ve completed the puzzle' . PHP_EOL;
         }
     }
 }
