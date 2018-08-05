@@ -2,6 +2,8 @@
 
 class Puzzle
 {
+    const MAX_FPS = 25;
+
     const INPUT_UP = 119;
     const INPUT_DOWN = 115;
     const INPUT_LEFT = 97;
@@ -66,6 +68,8 @@ class Puzzle
 
             $this->clearScreen();
 
+            $this->limitScreenRefreshRate();
+
             $this->drawBoard($this->screen);
         }
     }
@@ -117,5 +121,10 @@ class Puzzle
     public function clearScreen()
     {
         system('clear');
+    }
+
+    public function limitScreenRefreshRate()
+    {
+        sleep(1 / self::MAX_FPS);
     }
 }
