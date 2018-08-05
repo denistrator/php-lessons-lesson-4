@@ -161,6 +161,26 @@ class Puzzle
     {
         if ($this->isPuzzleComplete) {
             echo 'You\'ve completed the puzzle' . PHP_EOL;
+
+            $this->showBonus();
+        }
+    }
+
+    public function showBonus()
+    {
+        while (1) {
+            echo 'Press F to respect the author or any other key exit' . PHP_EOL;
+
+            $inputStream = fopen('php://stdin', 'r');
+            $this->geuInputKey($inputStream);
+
+            // 70  = F
+            // 102 = f
+            if ($this->inputCharacter === 70 || $this->inputCharacter === 102) {
+                exec('start https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+            }
+
+            break;
         }
     }
 }
