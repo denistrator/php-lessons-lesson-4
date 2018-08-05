@@ -45,41 +45,26 @@ class Puzzle
 
     private $isPuzzleComplete = false;
 
-    public function updateBoard($inputCharacter)
-    {
-        if (in_array($inputCharacter, self::ALLOWED_INPUT_CHARACTERS)) {
-            $oldPointerPosY = $this->pointerPosY;
-            $oldPointerPosX = $this->pointerPosX;
-
-            $this->movePointer($inputCharacter);
-
-            $oldPointerCharacter = $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1];
-            $newPointerCharacter = $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1];
-
-            $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
-            $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
-
-        }
-    }
-
     public function run()
     {
         system('stty cbreak -echo');
 
         $inputStream = fopen('php://stdin', 'r');
 
+        echo PHP_EOL; // so the first app output will appear on new line
+
         $this->showStartScreen();
 
         while (!$this->isPuzzleComplete) {
             $this->geuInputKey($inputStream);
 
-            $this->updateBoard($this->inputCharacter);
+            $this->updateBoard();
 
             $this->clearScreen();
 
             $this->limitScreenRefreshRate();
 
-            $this->drawBoard($this->board);
+            $this->drawBoard();
 
             $this->checkIfPuzzleComplete();
 
@@ -92,8 +77,26 @@ class Puzzle
         $this->inputCharacter = ord(fgetc($input));
     }
 
-    public function drawBoard($screen)
+    public function updateBoard()
     {
+        if (in_array($this->inputCharacter, self::ALLOWED_INPUT_CHARACTERS)) {
+            $oldPointerPosY = $this->pointerPosY;
+            $oldPointerPosX = $this->pointerPosX;
+
+            $this->movePointer($this->inputCharacter);
+
+            $oldPointerCharacter = $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1];
+            $newPointerCharacter = $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1];
+
+            $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
+            $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
+
+        }
+    }
+
+    public function drawBoard()
+    {
+        $screen = $this->board;
         foreach ($screen as $screenRow) {
             foreach ($screenRow as $screenSymbol) {
                 echo $screenSymbol . '  ';
