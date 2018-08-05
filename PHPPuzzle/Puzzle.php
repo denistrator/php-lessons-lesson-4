@@ -1,4 +1,7 @@
 <?php
+/**
+ * Copyright © 2018 denistrator. No rights were reserved.
+ */
 
 class Puzzle
 {
@@ -79,19 +82,32 @@ class Puzzle
 
     public function updateBoard()
     {
-        if (in_array($this->inputCharacter, self::ALLOWED_INPUT_CHARACTERS)) {
-            $oldPointerPosY = $this->pointerPosY;
-            $oldPointerPosX = $this->pointerPosX;
-
-            $this->movePointer($this->inputCharacter);
-
-            $oldPointerCharacter = $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1];
-            $newPointerCharacter = $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1];
-
-            $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
-            $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
-
+        if ($this->canInputControlGameBoard()) {
+            $this->swapGameChips();
         }
+    }
+
+    public function swapGameChips()
+    {
+        $oldPointerPosY = $this->pointerPosY;
+        $oldPointerPosX = $this->pointerPosX;
+
+        $this->movePointer($this->inputCharacter);
+
+        $oldPointerCharacter = $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1];
+        $newPointerCharacter = $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1];
+
+        $this->board[$oldPointerPosY - 1][$oldPointerPosX - 1] = $newPointerCharacter;
+        $this->board[$this->pointerPosY - 1][$this->pointerPosX - 1] = $oldPointerCharacter;
+    }
+
+    public function canInputControlGameBoard()
+    {
+        if (in_array($this->inputCharacter, self::ALLOWED_INPUT_CHARACTERS)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function drawBoard()
