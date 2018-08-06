@@ -151,15 +151,9 @@ class Puzzle
                 }
 
                 foreach ($screenRow as $screenSymbolKey => $screenSymbol) {
-                    if ($chipMarginStep < $chipMiddleCell) {
-                        echo self::EMPTY_CHIP_CHARACTERS;
-                    }
-
                     if ($chipMarginStep === $chipMiddleCell) {
                         echo $screenSymbol;
-                    }
-
-                    if ($chipMarginStep > $chipMiddleCell) {
+                    } else {
                         echo self::EMPTY_CHIP_CHARACTERS;
                     }
 
