@@ -5,6 +5,9 @@
 
 class Puzzle
 {
+    const APP_ARG_NAME_SIZE = 's';
+    const APP_ARG_NAME_INDENT = 'i';
+
     const MAX_FPS = 25;
 
     const KEY_CODE_UP = 119;
@@ -23,6 +26,14 @@ class Puzzle
     const SCREEN_SIZE_Y_MAX = 4;
     const SCREEN_SIZE_X_MIN = 1;
     const SCREEN_SIZE_X_MAX = 4;
+
+    const BOARD_INDENT_DEFAULT = 1;
+    const BOARD_INDENT_MIN = 0;
+    const BOARD_INDENT_MAX = 5;
+
+    const BOARD_SIZE_DEFAULT = 1;
+    const BOARD_SIZE_MIN = 0;
+    const BOARD_SIZE_MAX = 6;
 
     const EMPTY_CHIP_CHARACTERS = '  ';
 
@@ -49,6 +60,11 @@ class Puzzle
     private $inputCharacter;
 
     private $isPuzzleComplete = false;
+
+    public function __construct($appArgs)
+    {
+        $this->appArgs = $appArgs;
+    }
 
     public function run()
     {
@@ -123,11 +139,11 @@ class Puzzle
         $verticalSplitterCharacter = '-';
         $horizontalSplitterCharacter = '|';
 
-        $boardFrameMargin = 3;
+        $boardFrameMargin = $this->getBoardIndent();
         $boardFrameMarginVertical = str_repeat($verticalSpacer, $boardFrameMargin);
         $boardFrameMarginHorizontal = str_repeat(' ', $boardFrameMargin * 2);
 
-        $chipMarginStep = 1;
+        $chipMarginStep = $this->getBoardSize();
         $chipMarginVertical = 1 + $chipMarginStep * 2;
         $chipMiddleCell = ($chipMarginVertical - 1) / 2;
         $chipMarginHorizontal = str_repeat($horizontalSpacer, $chipMarginStep);
@@ -251,4 +267,59 @@ class Puzzle
             break;
         }
     }
+
+    public function hasAppRunArgument($argumentName)
+    {
+        if (!empty($this->appArgs)) {
+            return array_key_exists($argumentName, $this->appArgs);
+        }
+
+        return false;
+    }
+
+    public function getAppRunArgumentNumeric($argumentName)
+    {
+        $argumentValue = false;
+
+        if ($this->hasAppRunArgument($argumentName)) {
+            $argument = $this->appArgs[$argumentName];
+
+            if ($argument !== false) {
+                $argument = preg_replace('/[^0-9]/', '', $argument);
+
+                if ($argument !== '') {
+                    $argumentValue = intval($argument);
+                }
+            }
+        }
+
+        return $argumentValue;
+    }
+
+    public function getBoardSize()
+    {
+        $customBoardSize = $this->getAppRunArgumentNumeric(self::APP_ARG_NAME_SIZE);
+
+        if ($customBoardSize !== false) {
+            return limitValue($customBoardSize, self::BOARD_SIZE_MIN, self::BOARD_SIZE_MAX);
+        }
+
+        return self::BOARD_SIZE_DEFAULT;
+    }
+
+    public function getBoardIndent()
+    {
+        $customBoardIndent = $this->getAppRunArgumentNumeric(self::APP_ARG_NAME_INDENT);
+
+        if ($customBoardIndent !== false) {
+            return limitValue($customBoardIndent, self::BOARD_INDENT_MIN, self::BOARD_INDENT_MAX);
+        }
+
+        return self::BOARD_INDENT_DEFAULT;
+    }
+}
+
+function limitValue($value, $min, $max)
+{
+    return max($min, min($value, $max));
 }

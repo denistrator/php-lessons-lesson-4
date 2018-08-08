@@ -2,5 +2,6 @@
 
 require_once 'Puzzle.php';
 
-$game = new Puzzle();
+$args = getopt('s::i::');
+$game = new Puzzle($args);
 $game->run();
